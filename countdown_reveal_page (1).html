@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wait for it...</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      overflow: hidden; color: white; font-family: Arial, sans-serif;
+      background: radial-gradient(circle at 50% 35%, #29245d, #090914 65%, #030307);
+    }
+    .stars, .stars::before, .stars::after {
+      position: fixed; inset: 0; content: ""; pointer-events: none;
+      background-image: radial-gradient(white 1px, transparent 1.5px);
+      background-size: 75px 75px; opacity: .22;
+      animation: drift 18s linear infinite;
+    }
+    .stars::before { background-size: 113px 113px; opacity: .35; animation-duration: 27s; }
+    .stars::after { background-size: 47px 47px; opacity: .15; animation-duration: 36s; }
+    @keyframes drift { to { transform: translateY(-75px); } }
+    main { position: relative; z-index: 1; text-align: center; padding: 24px; }
+    #timer {
+      font-size: clamp(5rem, 22vw, 10rem); font-weight: 800; line-height: 1;
+      text-shadow: 0 0 25px #9a8cff, 0 0 55px #6555ff;
+      animation: pulse 1s ease-in-out infinite;
+    }
+    @keyframes pulse { 50% { transform: scale(1.08); opacity: .75; } }
+    #hint { margin-top: 18px; color: #c9c5e8; letter-spacing: 2px; }
+    #revealButton {
+      display: none; margin: 26px auto 0; padding: 16px 42px;
+      border: 1px solid #c7bfff; border-radius: 999px; color: white;
+      background: linear-gradient(135deg, #7965ff, #bd55d8);
+      font-size: 1.15rem; font-weight: 700; cursor: pointer;
+      box-shadow: 0 0 25px #8b6cff88; transition: transform .2s, box-shadow .2s;
+    }
+    #revealButton:hover { transform: scale(1.08); box-shadow: 0 0 38px #b77aff; }
+    #message {
+      display: none; font-size: clamp(2rem, 8vw, 4.5rem); font-weight: 900;
+      color: #fff; text-shadow: 0 0 12px #ff70df, 0 0 35px #8b6cff;
+      animation: floatIn 1.2s cubic-bezier(.2,.8,.2,1) both;
+    }
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(70px) scale(.65); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+  <main>
+    <div id="timer">15</div>
+    <div id="hint">GET READY...</div>
+    <button id="revealButton">WHICH?</button>
+    <div id="message">brijesh bhadwa 144</div>
+  </main>
+  <script>
+    const timer = document.getElementById('timer');
+    const hint = document.getElementById('hint');
+    const button = document.getElementById('revealButton');
+    const message = document.getElementById('message');
+    let remaining = 15;
+
+    const countdown = setInterval(() => {
+      remaining -= 1;
+      timer.textContent = remaining;
+      if (remaining <= 0) {
+        clearInterval(countdown);
+        timer.style.display = 'none';
+        hint.textContent = 'THE MOMENT HAS ARRIVED';
+        button.style.display = 'block';
+      }
+    }, 1000);
+
+    button.addEventListener('click', () => {
+      button.style.display = 'none';
+      hint.style.display = 'none';
+      message.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
